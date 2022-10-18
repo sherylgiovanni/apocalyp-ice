@@ -7,16 +7,18 @@ public class SpawnManager : MonoBehaviour
     RoadSpawner roadSpawner; 
     public GameObject player;
     public GameObject enemyPrefab;
+    private PlayerController playerController;
     private float spawnRangeX = 10;
     private float spawnPosZ;
     private float startDelay = 2;
-    private float spawnInterval = 2.5f;
+    private float spawnInterval = 1.5f;
 
     // Start is called before the first frame update
     void Start()
     {
         roadSpawner = GetComponent<RoadSpawner>();
-        InvokeRepeating("SpawnEnemy", startDelay, spawnInterval);   
+        playerController = player.GetComponent<PlayerController>();
+        InvokeRepeating("SpawnEnemy", startDelay, spawnInterval);
     }
 
     // Update is called once per frame
@@ -25,21 +27,16 @@ public class SpawnManager : MonoBehaviour
     }
 
     void SpawnEnemy() {
-        spawnPosZ = Random.Range(player.transform.position.z + 100, player.transform.position.z + 110);
-        Vector3 spawnPos = new Vector3(Random.Range(-spawnRangeX, spawnRangeX), 3, spawnPosZ);
-        Instantiate(enemyPrefab, spawnPos, enemyPrefab.transform.rotation);
+        if (playerController.isGameActive)
+        {
+            spawnPosZ = Random.Range(player.transform.position.z + 100, player.transform.position.z + 150);
+            Vector3 spawnPos = new Vector3(Random.Range(-spawnRangeX, spawnRangeX), 100, spawnPosZ);
+            Instantiate(enemyPrefab, spawnPos, enemyPrefab.transform.rotation);
+        }
     }
 
     public void SpawnTriggerEntered()
     {
         roadSpawner.MoveRoad();
     }
-
-    //public void SpawnTriggerEntered(GameObject gameObject)
-    //{
-    //    if (gameObject.CompareTag("Player"))
-    //    {
-    //        roadSpawner.MoveRoad();
-    //    }
-    //}
 }
