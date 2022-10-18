@@ -15,10 +15,10 @@ public class PlayerController : MonoBehaviour
     public float zRange = -50;
     private int projectileCount;
     public GameObject projectilePrefab;
+    public GameObject titleScreen;
     private Rigidbody playerRb;
     public SpawnManager spawnManager;
     private GameObject[] projectiles;
-    public ParticleSystem dirtParticle;
     public AudioClip shootingSound;
     private AudioSource playerAudio;
     public TextMeshProUGUI scoreText;
@@ -32,15 +32,22 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        isGameActive = false;
+    }
+
+    public void StartGame()
+    {
+        titleScreen.gameObject.SetActive(false);
         playerRb = GetComponent<Rigidbody>();
         playerAudio = GetComponent<AudioSource>();
+        scoreText.gameObject.SetActive(true);
+        healthText.gameObject.SetActive(true);
         score = 0;
         health = 10;
         scoreText.text = "Score: " + score;
         healthText.text = "Health: " + health;
         isGameActive = true;
     }
-
     // Update is called once per frame
     void Update()
     {

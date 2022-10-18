@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     public AudioClip spawnedSound;
     private AudioSource enemyAudio;
     public ParticleSystem rollingParticle;
+    public ParticleSystem explosionParticle;
     private PlayerController playerController;
 
     // Start is called before the first frame update
@@ -22,6 +23,7 @@ public class Enemy : MonoBehaviour
         playerController = player.GetComponent<PlayerController>();
         enemyAudio = GetComponent<AudioSource>();
         enemyAudio.PlayOneShot(spawnedSound, 0.25f);
+        explosionParticle.Play();
     }
 
     // Update is called once per frame
@@ -35,7 +37,6 @@ public class Enemy : MonoBehaviour
             if (transform.position.y < -10)
             {
                 Destroy(gameObject);
-                rollingParticle.Stop();
             }
 
             // if player misses an enemy, minus one health
@@ -43,7 +44,6 @@ public class Enemy : MonoBehaviour
             {
                 playerController.UpdateHealth(1);
                 Destroy(gameObject);
-                rollingParticle.Stop();
             }
         }
     }
